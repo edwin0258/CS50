@@ -32,6 +32,7 @@ int board[DIM_MAX][DIM_MAX];
 // dimensions
 int d;
 
+
 // prototypes
 void clear(void);
 void greet(void);
@@ -40,6 +41,8 @@ void draw(void);
 bool move(int tile);
 bool won(void);
 
+int empty_x;
+int empty_y;
 int main(int argc, string argv[])
 {
     // ensure proper usage
@@ -51,6 +54,8 @@ int main(int argc, string argv[])
 
     // ensure valid dimensions
     d = atoi(argv[1]);
+    empty_x = d-1;
+    empty_y = d-1;
     if (d < DIM_MIN || d > DIM_MAX)
     {
         printf("Board must be between %i x %i and %i x %i, inclusive.\n",
@@ -157,9 +162,19 @@ void greet(void)
  * Initializes the game's board with tiles numbered 1 through d*d - 1
  * (i.e., fills 2D array with values but does not actually print them).  
  */
+
 void init(void)
 {
-    // TODO
+    int num = (d*d)-1;
+    //define empty space's x and y coords on board.
+    for(int x = 0;x < d;x++){
+        for(int y = 0;y < d;y++){
+            if(num>0){
+                board[x][y] = num;
+                num-=1;
+            }
+        }
+    }
 }
 
 /**
@@ -167,25 +182,101 @@ void init(void)
  */
 void draw(void)
 {
-    // TODO
+    for(int x = 0;x < d;x++){
+        for(int y = 0;y < d;y++){
+            if(board[x][y] > 0){
+                printf("%3d", board[x][y]);
+            }
+            else{
+                printf(" _ ");
+            }
+        }
+        printf("\n\n");
+    }
 }
 
 /**
  * If tile borders empty space, moves tile and returns true, else
  * returns false. 
  */
+void swap(int positions[]);
+
 bool move(int tile)
 {
-    // TODO
+    int tile_x;
+    int tile_y;
+    //find coords of inputed tile
+    for(int x = 0;x < d;x++){
+        for(int y = 0;y < d;y++){
+            if(board[x][y] == tile){
+                tile_y = y;
+                tile_x = x;
+            }
+        }
+    }
+    
+    //shifting to row above, a shift in the x row not y.
+    int below_tile = tile_x+1;
+    int above_tile = tile_x-1;
+    int left_tile =  tile_y-1;
+    int right_tile = tile_y+1;
+    
+    //create an array to later be passed into a function
+    int positions[5] = {tile_x,tile_y,empty_x,empty_y,tile};
+    
+    //check if empty tile is directly below chosen tile.
+    if(below_tile == empty_x && tile_y == empty_y){
+       swap(positions);
+       empty_x-=1;
+       return true;
+    }
+    else if(above_tile == empty_x  && tile_y == empty_y){
+       swap(positions);
+       empty_x+=1;
+       return true;
+    }
+    else if(left_tile == empty_y && tile_x == empty_x){
+       swap(positions);
+       empty_y+=1;
+       return true;
+    }
+    else if(right_tile == empty_y && tile_x == empty_x){
+       swap(positions);
+       empty_y-=1;
+       return true;
+    }
     return false;
+}
+
+void swap(int positions[]){
+    board[positions[0]][positions[1]] = 0;
+    board[positions[2]][positions[3]] = positions[4];
 }
 
 /**
  * Returns true if game is won (i.e., board is in winning configuration), 
  * else false.
  */
+
 bool won(void)
 {
-    // TODO
-    return false;
+    //flatten 2d array
+    int myArray[d * d-1];
+    int i = 0;
+    for(int x = 0;x < d;x++){
+        for(int y = 0;y < d;y++){
+          myArray[i++] = board[x][y];
+        }
+    }
+    int count = 0;
+    for(int x = 1,n=(d*d)-1;x < n;x++){
+        if(myArray[x] != myArray[x-1]+1){
+            //printf("no");
+            count+=1;
+        }
+    }
+    if(count > 0){
+        return false;
+    }
+    return true;
 }
