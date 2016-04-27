@@ -175,6 +175,10 @@ void init(void)
             }
         }
     }
+    if(d % 2 ==  0){
+        board[d-1][d-2] = 2;
+        board[d-1][d-3] = 1;
+    }
 }
 
 /**
@@ -184,15 +188,19 @@ void draw(void)
 {
     for(int x = 0;x < d;x++){
         for(int y = 0;y < d;y++){
-            if(board[x][y] > 0){
-                printf("%3d", board[x][y]);
+            if(board[x][y] > 9){
+                printf(" %d ", board[x][y]);
+            }
+            else if(board[x][y] > 0){
+                printf("  %d ", board[x][y]);
             }
             else{
-                printf(" _ ");
+                printf("%3s", "_");
             }
         }
         printf("\n\n");
     }
+    
 }
 
 /**
@@ -261,22 +269,18 @@ void swap(int positions[]){
 bool won(void)
 {
     //flatten 2d array
-    int myArray[d * d-1];
-    int i = 0;
+    //int myArray[d * d-1];
+    int count = 1;
     for(int x = 0;x < d;x++){
         for(int y = 0;y < d;y++){
-          myArray[i++] = board[x][y];
+            if(board[x][y] != count && board[x][y] != 0){
+                
+                return false;
+            }
+            else{
+                count+=1;
+            }
         }
-    }
-    int count = 0;
-    for(int x = 1,n=(d*d)-1;x < n;x++){
-        if(myArray[x] != myArray[x-1]+1){
-            //printf("no");
-            count+=1;
-        }
-    }
-    if(count > 0){
-        return false;
     }
     return true;
 }
