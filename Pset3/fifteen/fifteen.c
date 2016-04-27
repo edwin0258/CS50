@@ -268,8 +268,6 @@ void swap(int positions[]){
 
 bool won(void)
 {
-    //flatten 2d array
-    //int myArray[d * d-1];
     int count = 1;
     for(int x = 0;x < d;x++){
         for(int y = 0;y < d;y++){
