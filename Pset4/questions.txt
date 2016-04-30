@@ -1,0 +1,19 @@
+0.  BMP supports over 4 billion colors(32 bit), GIF supports 256 colors(8 bit),JPEG and PNG support 16 million colors(24 bit).
+1.  The GIF file type supports animation, PNG file types supposable have support as well.
+2.  Lossy compression permanently reduces file by taking out information. Lossless compression keeps all the original data when the file in uncompressed.
+3.  JPEG uses lossy compression.
+4.  TODO
+5.  TODO
+6.  TODO
+7.  TODO
+8.  TODO
+9.  TODO
+10. TODO
+11. TODO
+12. TODO
+13. TODO
+14. TODO
+15. TODO
+16. TODO
+17. TODO
+18. TODO
